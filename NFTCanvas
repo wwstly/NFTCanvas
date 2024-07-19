@@ -1,0 +1,32 @@
+# scripts/nft_browser.py
+
+import requests
+import pandas as pd
+
+def fetch_nft_collection(api_url, collection_id):
+    """
+    Fetch NFT collection data from an API.
+    
+    :param api_url: Base URL of the NFT API
+    :param collection_id: ID of the NFT collection to fetch data for
+    :return: DataFrame with NFT collection data
+    """
+    response = requests.get(f'{api_url}/collections/{collection_id}')
+    response.raise_for_status()
+    data = response.json()
+    df = pd.DataFrame(data['nfts'])
+    return df
+
+def display_nft_collection(df):
+    """
+    Display NFT collection data.
+    
+    :param df: DataFrame with NFT collection data
+    """
+    print(df[['name', 'token_id', 'owner', 'price']])
+
+# Example usage:
+# api_url = 'https://api.nft.example.com'
+# collection_id = 'collection_123'
+# nft_collection_df = fetch_nft_collection(api_url, collection_id)
+# display_nft_collection(nft_collection_df)
